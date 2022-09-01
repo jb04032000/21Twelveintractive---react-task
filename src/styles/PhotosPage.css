@@ -1,0 +1,21 @@
+.albumTitle {
+  color:rgb(66, 224, 172)
+}
+
+.photosListContainer{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.photosListUI{
+  cursor: pointer;
+  transition: .2s ease all;
+}
+
+.photosListUI:hover{
+  transform: scale(1.05);
+}

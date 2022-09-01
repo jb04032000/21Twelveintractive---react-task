@@ -1,0 +1,13 @@
+.UsersAlbumList{
+  text-align: start;
+  cursor: pointer;
+}
+
+.UsersAlbumList > li{
+  transition: 0.2s ease all;
+}
+
+.UsersAlbumList > li:hover{
+  color:rgb(66, 224, 172)
+}
+

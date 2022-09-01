@@ -7,7 +7,8 @@ import {
 } from "../../redux/actions/homePageActions";
 import Accordion from "react-bootstrap/Accordion";
 import "../../styles/HomePage.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getPhotosList } from "../../redux/actions/photosPageActions";
 
 const accordion = (id, title, body) => {
   return (
@@ -21,7 +22,6 @@ const accordion = (id, title, body) => {
 };
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const usersListLoader = useSelector(
     (state) => state.rootReducer.homePageReducer?.userLoading
@@ -36,21 +36,20 @@ const HomePage = () => {
     (state) => state.rootReducer.homePageReducer?.albums
   );
 
-  const handleRouteChange = (payload) => {
-    navigate("/photos", { state: payload });
-  };
-
   const showUsersAlbum = (userId) => {
     return albumsList.map(
       (data) =>
         Number(data?.userId) === userId && (
           <div key={data?.id} className="UsersAlbumList">
-            <li
-              onClick={() =>
-                handleRouteChange({ albumId: data.id, albumName: data.title })
-              }
-            >
-              {data?.title}
+            <li>
+              <Link
+                to={`/photos/${data.id}`}
+                key={data.id}
+                params={{ albumId: data.id, albumName: data.title }}
+                className="text-link"
+              >
+                {data?.title}
+              </Link>
             </li>
           </div>
         )
@@ -92,11 +91,12 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(getUsersList());
     dispatch(getAlbumData());
+    dispatch(getPhotosList());
   }, []);
 
   return (
     <div>
-      <p>Users list</p>
+      <p className="my-3">Users list</p>
       {usersListLoader ? loader() : showUsersList()}
     </div>
   );

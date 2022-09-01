@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loader } from "../../basic/helpers";
 import { getPhotosList } from "../../redux/actions/photosPageActions";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/PhotosPage.css";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import ImageModal from "../Components/ImageModal";
 
 const PhotosPage = () => {
-  const location = useLocation();
-  const locationStateData = location?.state;
+  const navigate = useNavigate();
+  let { id } = useParams();
   const dispatch = useDispatch();
   const photosListLoader = useSelector(
     (state) => state.rootReducer.photosPageReducer.loading
@@ -61,20 +61,23 @@ const PhotosPage = () => {
   };
 
   useEffect(() => {
-    locationStateData && dispatch(getPhotosList());
-  }, [locationStateData]);
+    if (photosList.length === 0) id && dispatch(getPhotosList());
+  }, [id]);
 
   return (
     <div>
-      <p>
-        Photo list of
-        <span className="albumTitle"> {locationStateData?.albumName} </span>
-      </p>
+      <div className="d-flex overflow-hidden my-3">
+        <div style={{ flex: 1 }}>
+          <Button onClick={() => navigate(-1)}>Go Back</Button>
+        </div>
+        <div> Photo list</div>
+        <div style={{ flex: 1 }}></div>
+      </div>
       {photosListLoader ? (
         loader()
       ) : (
         <div className="photosListContainer mx-5 my-2">
-          {showPhotosList(locationStateData?.albumId)}
+          {showPhotosList(id)}
         </div>
       )}
       <ImageModal

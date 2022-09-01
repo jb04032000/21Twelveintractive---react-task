@@ -19,3 +19,9 @@
 .photosListUI:hover{
   transform: scale(1.05);
 }
+
+.text-link{
+  color: inherit !important;
+  text-decoration: inherit !important;
+
+}

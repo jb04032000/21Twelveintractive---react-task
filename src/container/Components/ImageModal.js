@@ -19,7 +19,12 @@ export default function ImageModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image width="100%" alt={title && title} src={src && src} />
+        <Image
+          style={{ minHeight: 300 }}
+          width="100%"
+          alt={title && title}
+          src={src && src}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

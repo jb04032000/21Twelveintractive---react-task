@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { loader } from "../../basic/helpers";
-import { getPhotosList } from "../../redux/actions/photosPageActions";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../../styles/PhotosPage.css";
 import { Button, Image } from "react-bootstrap";
 import ImageModal from "../Components/ImageModal";
 
 const PhotosPage = () => {
   const navigate = useNavigate();
-  let location = useLocation();
-  let { id } = useParams();
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const albumName = location.state.albumName;
+  const photosData = location.state.photosData;
   const photosListLoader = useSelector(
     (state) => state.rootReducer.photosPageReducer.loading
-  );
-  const photosList = useSelector(
-    (state) => state.rootReducer.photosPageReducer.photos
   );
   const [modalShow, setModalShow] = useState(false);
   const [modalData, setModalData] = useState({
@@ -39,31 +35,25 @@ const PhotosPage = () => {
     });
   };
 
-  const showPhotosList = (albumId) => {
+  const showPhotosList = () => {
     return (
-      photosList?.length > 0 &&
-      photosList
-        .filter((data) => Number(data?.albumId) === Number(albumId))
-        .map(
-          (data) =>
-            data?.thumbnailUrl && (
-              <div key={data?.id} className="mx-5 my-2 photosListUI">
-                <Image
-                  alt={data?.title && data.title}
-                  src={data.thumbnailUrl}
-                  onClick={() =>
-                    data.url && handleImageClick(data.url, data.title)
-                  }
-                />
-              </div>
-            )
-        )
+      photosData?.length > 0 &&
+      photosData.map(
+        (data) =>
+          data?.thumbnailUrl && (
+            <div key={data?.id} className="mx-5 my-2 photosListUI">
+              <Image
+                alt={data?.title && data.title}
+                src={data.thumbnailUrl}
+                onClick={() =>
+                  data.url && handleImageClick(data.url, data.title)
+                }
+              />
+            </div>
+          )
+      )
     );
   };
-
-  useEffect(() => {
-    if (photosList.length === 0) id && dispatch(getPhotosList());
-  }, [id]);
 
   return (
     <div>
@@ -75,14 +65,12 @@ const PhotosPage = () => {
         <div style={{ flex: 1 }}></div>
       </div>
       {location.state?.albumName && (
-        <div className="container albumTitle">{location.state.albumName} </div>
+        <div className="container albumTitle">{albumName} </div>
       )}
       {photosListLoader ? (
         loader()
       ) : (
-        <div className="photosListContainer mx-5 my-2">
-          {showPhotosList(id)}
-        </div>
+        <div className="photosListContainer mx-5 my-2">{showPhotosList()}</div>
       )}
       <ImageModal
         show={modalShow}

@@ -23,6 +23,9 @@ const accordion = (id, title, body) => {
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const photosList = useSelector(
+    (state) => state.rootReducer.photosPageReducer.photos
+  );
   const usersListLoader = useSelector(
     (state) => state.rootReducer.homePageReducer?.userLoading
   );
@@ -36,6 +39,13 @@ const HomePage = () => {
     (state) => state.rootReducer.homePageReducer?.albums
   );
 
+  const getPhotosData = (albumId) => {
+    const photosData =
+      photosList.length > 0 &&
+      photosList.filter((data) => Number(data?.albumId) === Number(albumId));
+    return photosData;
+  };
+
   const showUsersAlbum = (userId) => {
     return albumsList.map(
       (data) =>
@@ -44,7 +54,10 @@ const HomePage = () => {
             <li>
               <Link
                 to={`/photos/${data.id}`}
-                state={{ albumName: data.title }}
+                state={{
+                  albumName: data.title,
+                  photosData: getPhotosData(data.id),
+                }}
                 key={data.id}
                 className="text-link"
               >

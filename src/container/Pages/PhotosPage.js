@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loader } from "../../basic/helpers";
 import { getPhotosList } from "../../redux/actions/photosPageActions";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../styles/PhotosPage.css";
 import { Button, Image } from "react-bootstrap";
 import ImageModal from "../Components/ImageModal";
 
 const PhotosPage = () => {
   const navigate = useNavigate();
+  let location = useLocation();
   let { id } = useParams();
   const dispatch = useDispatch();
   const photosListLoader = useSelector(
@@ -73,6 +74,9 @@ const PhotosPage = () => {
         <div> Photo list</div>
         <div style={{ flex: 1 }}></div>
       </div>
+      {location.state?.albumName && (
+        <div className="container albumTitle">{location.state.albumName} </div>
+      )}
       {photosListLoader ? (
         loader()
       ) : (

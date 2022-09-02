@@ -1,4 +1,5 @@
 import { Modal, Button, Image } from "react-bootstrap";
+import "../../styles/ImageModal.css";
 
 export default function ImageModal(props) {
   const {
@@ -19,12 +20,7 @@ export default function ImageModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image
-          style={{ minHeight: 300 }}
-          width="100%"
-          alt={title && title}
-          src={src && src}
-        />
+        <Image className="modalImage" alt={title && title} src={src && src} />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

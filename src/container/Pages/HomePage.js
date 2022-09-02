@@ -44,8 +44,8 @@ const HomePage = () => {
             <li>
               <Link
                 to={`/photos/${data.id}`}
+                state={{ albumName: data.title }}
                 key={data.id}
-                params={{ albumId: data.id, albumName: data.title }}
                 className="text-link"
               >
                 {data?.title}
